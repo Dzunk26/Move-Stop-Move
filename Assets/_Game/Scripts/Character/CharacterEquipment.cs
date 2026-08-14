@@ -1,0 +1,46 @@
+using System;
+using System.Collections;
+using System.Collections.Generic;
+using UnityEngine;
+
+public class CharacterEquipment : MonoBehaviour {
+    [SerializeField] CharacterStat characterStat;
+
+    private Equipment[] currentEquipments;
+
+    private void Awake() {
+        int numSlots = System.Enum.GetNames(typeof(EquipmentType)).Length;
+        currentEquipments = new Equipment[numSlots];
+    }
+
+    public void OnInit() {
+        
+    }
+
+    public void OnDespawn() {
+
+    }
+
+    public void Equip(Equipment newEquipment) {
+        int slotIndex = (int)newEquipment.GetEquipmentType();
+
+        Equipment oldEquipment = null;
+
+        if (currentEquipments[slotIndex] != null) {
+            oldEquipment = currentEquipments[slotIndex];
+        }
+
+        characterStat.OnEquipmentChanged(newEquipment, oldEquipment);
+
+        currentEquipments[slotIndex] = newEquipment;
+    }
+
+    public void Unequip(int slotIndex) {
+        if (currentEquipments[slotIndex] != null) {
+            Equipment oldEquipment = currentEquipments[slotIndex];
+            currentEquipments[slotIndex] = null;
+
+            characterStat.OnEquipmentChanged(null, oldEquipment);
+        }
+    }
+}

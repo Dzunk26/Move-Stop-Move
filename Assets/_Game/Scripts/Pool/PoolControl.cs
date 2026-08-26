@@ -3,9 +3,11 @@ using System.Collections.Generic;
 using UnityEngine;
 
 public enum PoolType {
-    Brick,
-    CharacterBrick,
-    Bot
+    Player,
+    Bot,
+    KnifeProjectile,
+    AxeProjectile,
+    BommerangProjectile
 }
 
 [System.Serializable]

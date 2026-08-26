@@ -12,10 +12,10 @@ public static class SimplePool {
             return;
         }
 
-        if (!poolInstances.ContainsKey(prefab.poolType) || poolInstances[prefab.poolType] == null) {
+        if (!poolInstances.ContainsKey(prefab.PoolType) || poolInstances[prefab.PoolType] == null) {
             Pool pool = new Pool();
             pool.PreLoad(prefab, amount, parent);
-            poolInstances[prefab.poolType] = pool;
+            poolInstances[prefab.PoolType] = pool;
         }
     }
     
@@ -31,12 +31,12 @@ public static class SimplePool {
 
     // tra phan tu ve pool
     public static void ReturnToPool<T>(T unit) where T : GameUnit {
-        if (!poolInstances.ContainsKey(unit.poolType)) {
-            Debug.LogError(unit.poolType + " is not loaded");
+        if (!poolInstances.ContainsKey(unit.PoolType)) {
+            Debug.LogError(unit.PoolType + " is not loaded");
             return;
         }
 
-        poolInstances[unit.poolType].ReturnToPool(unit);
+        poolInstances[unit.PoolType].ReturnToPool(unit);
     }
 
     // thu tat ca cac phan tu dang dung ve pool
@@ -100,7 +100,7 @@ public class Pool {
         }
         else {
             unit = inactives.Dequeue();
-            unit.Tf.SetPositionAndRotation(position, rotation);
+            unit.TF.SetPositionAndRotation(position, rotation);
             unit.gameObject.SetActive(true);
         }
 

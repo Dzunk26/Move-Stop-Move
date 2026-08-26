@@ -10,14 +10,14 @@ public enum EquipmentType {
 }
 
 public class Equipment : MonoBehaviour {
-    [SerializeField] private EquipmentType equipmentType;
-    [SerializeField] private float attackRangeModifier;
-    [SerializeField] private float attackSpeedModifier;
-    [SerializeField] private float moveSpeedModifier;
-    [SerializeField] private int goldPercentModifier;
-    [SerializeField] private int attackRangePercentModifier;
-    [SerializeField] private int attackSpeedPercentModifier;
-    [SerializeField] private int moveSpeedPercentModifier;
+    [SerializeField] protected EquipmentType equipmentType;
+    [SerializeField] protected float attackRangeModifier;
+    [SerializeField] protected float attackSpeedModifier;
+    [SerializeField] protected float moveSpeedModifier;
+    [SerializeField] protected int goldPercentModifier;
+    [SerializeField] protected int attackRangePercentModifier;
+    [SerializeField] protected int attackSpeedPercentModifier;
+    [SerializeField] protected int moveSpeedPercentModifier;
 
     public EquipmentType GetEquipmentType() {
         return equipmentType;

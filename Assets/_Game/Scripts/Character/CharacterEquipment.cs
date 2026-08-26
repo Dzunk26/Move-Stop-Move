@@ -4,24 +4,24 @@ using System.Collections.Generic;
 using UnityEngine;
 
 public class CharacterEquipment : MonoBehaviour {
-    [SerializeField] CharacterStat characterStat;
+    [SerializeField] private Character character;
 
-    private Equipment[] currentEquipments;
+    [SerializeField] private Equipment[] currentEquipments;
 
     private void Awake() {
-        int numSlots = System.Enum.GetNames(typeof(EquipmentType)).Length;
-        currentEquipments = new Equipment[numSlots];
+        OnInit();    
     }
 
     public void OnInit() {
-        
+        int numSlots = System.Enum.GetNames(typeof(EquipmentType)).Length;
+        currentEquipments = new Equipment[numSlots];
     }
 
     public void OnDespawn() {
 
     }
 
-    public void Equip(Equipment newEquipment) {
+    public void OnEquipmentChanged(Equipment newEquipment) {
         int slotIndex = (int)newEquipment.GetEquipmentType();
 
         Equipment oldEquipment = null;
@@ -30,7 +30,7 @@ public class CharacterEquipment : MonoBehaviour {
             oldEquipment = currentEquipments[slotIndex];
         }
 
-        characterStat.OnEquipmentChanged(newEquipment, oldEquipment);
+        //characterStat.OnEquipmentChanged(newEquipment, oldEquipment);
 
         currentEquipments[slotIndex] = newEquipment;
     }
@@ -40,7 +40,13 @@ public class CharacterEquipment : MonoBehaviour {
             Equipment oldEquipment = currentEquipments[slotIndex];
             currentEquipments[slotIndex] = null;
 
-            characterStat.OnEquipmentChanged(null, oldEquipment);
+            //characterStat.OnEquipmentChanged(null, oldEquipment);
         }
+    }
+
+    public Weapon GetCurrentWeapon() {
+        int slotIndex = (int) EquipmentType.Weapon;
+        
+        return (Weapon)currentEquipments[slotIndex];
     }
 }

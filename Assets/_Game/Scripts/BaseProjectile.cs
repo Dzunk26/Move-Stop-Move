@@ -18,6 +18,7 @@ public abstract class BaseProjectile : GameUnit {
     protected float stopTimer;
     private float characterAttackRange;
     private Character owner;
+    private bool isCollided;
 
     private void Update() {
 
@@ -38,7 +39,11 @@ public abstract class BaseProjectile : GameUnit {
     private void OnTriggerEnter(Collider other) {
         if (other.CompareTag(Constant.CHARACTER_TAG)) {
             Character character = Cache.GetCharacter(other);
-            if (!IsOwner(character)) {
+            if (!IsOwner(character) && !isCollided) {
+                isCollided = true;
+                int pointReward = character.GetPointReward();
+                owner.IncreasePoint(pointReward);
+                character.OnHitted();
                 OnDespawn();
             }
         }
@@ -49,10 +54,10 @@ public abstract class BaseProjectile : GameUnit {
     }
 
     public void OnInit(Vector3 shootDir, Character owner) {
+        isCollided = false;
         this.owner = owner;
         this.shootDir = shootDir;
-        this.characterAttackRange = owner.CharacterStat.attackRange.GetBaseValue();
-        //this.characterAttackRange = owner.CharacterStat.attackRange.GetValue();
+        this.characterAttackRange = owner.GetWorldAttackRange();
         startPoint = TF.position;
         Shoot();
         stopTimer = 0f;

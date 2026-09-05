@@ -44,16 +44,16 @@ public abstract class BaseProjectile : GameUnit {
                 int pointReward = character.GetPointReward();
                 owner.IncreasePoint(pointReward);
                 character.OnHitted();
-                OnDespawn();
+                DelayFunct(nameof(OnDespawn), delayStop);
             }
         }
         else if (other.CompareTag(Constant.OBSTACLE_TAG)) {
-            Invoke(nameof(StopFly), delayStop); // delay de tao cam giac projectile va vao obstacle
+            DelayFunct(nameof(StopFly), delayStop); // delay de tao cam giac projectile va vao obstacle
             weaponCollider.enabled = false;
         }
     }
 
-    public void OnInit(Vector3 shootDir, Character owner) {
+    public virtual void OnInit(Vector3 shootDir, Character owner) {
         isCollided = false;
         this.owner = owner;
         this.shootDir = shootDir;
@@ -73,13 +73,17 @@ public abstract class BaseProjectile : GameUnit {
         isFlying = true;
     }
 
+    public bool IsOwner(Character character) {
+        return character == owner;
+    }
+
     protected abstract void Fly();
 
     private void StopFly() {
         isFlying = false;
     }
 
-    public bool IsOwner(Character character) {
-        return character == owner;
+    private void DelayFunct(string funcName, float delay) {
+        Invoke(funcName, delay);
     }
 }

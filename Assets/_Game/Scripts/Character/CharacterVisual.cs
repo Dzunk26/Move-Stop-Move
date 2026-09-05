@@ -12,12 +12,23 @@ public enum AnimState {
 }
 
 public class CharacterVisual : MonoBehaviour {
+    public Transform TF {
+        get {
+            if (tf == null) {
+                tf = transform;
+            }
+
+            return tf;
+        }
+    }
+
     [SerializeField] private Animator animator;
     [SerializeField] private GameObject weaponVisual;
     [SerializeField] private List<EquipmentVisual> equipmentVisuals = new List<EquipmentVisual>();
     
     private AnimState currentAnimState;
     private string animName;
+    private Transform tf;
 
     public void OnInit() {
         currentAnimState = AnimState.Idle;
@@ -32,8 +43,7 @@ public class CharacterVisual : MonoBehaviour {
     }
 
     public void OnAttack() {
-        ChangeAnimState(AnimState.Attack);
-        
+        PlayAnim(AnimState.Attack);
     }
 
     public void OnWin() {
@@ -61,6 +71,12 @@ public class CharacterVisual : MonoBehaviour {
         weaponVisual.SetActive(false);
     }
 
+    public void UpSize(float sizeScale) {
+        Vector3 newScale = new Vector3(sizeScale, sizeScale, sizeScale);
+
+        TF.localScale += newScale;
+    }
+
     private EquipmentVisual FindEquipmentVisualByType(EquipmentType equipmentType) {
         foreach (EquipmentVisual equipmentVisual in equipmentVisuals) {
             if (equipmentVisual.IsMatchEquipmentType(equipmentType)) {
@@ -82,5 +98,10 @@ public class CharacterVisual : MonoBehaviour {
 
             animator.SetTrigger(animName);
         }
+    }
+
+    private void PlayAnim(AnimState animState) {
+        int hash = Cache.GetAnimHash(animState);
+        animator.Play(hash, 0, 0f);
     }
 }

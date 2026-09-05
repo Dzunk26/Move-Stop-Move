@@ -44,9 +44,15 @@ public class CharacterEquipment : MonoBehaviour {
         }
     }
 
-    public Weapon GetCurrentWeapon() {
-        int slotIndex = (int) EquipmentType.Weapon;
-        
-        return (Weapon)currentEquipments[slotIndex];
+    public Equipment GetEquipmentByType(EquipmentType equipmentType) {
+        int slotIndex = (int)equipmentType;
+
+        Equipment oldEquipment = null;
+
+        if (currentEquipments[slotIndex] != null) {
+            oldEquipment = currentEquipments[slotIndex];
+        }
+
+        return oldEquipment;
     }
 }

@@ -11,7 +11,7 @@ public abstract class Character : GameUnit {
     [SerializeField] protected Transform firePoint;
     [SerializeField] protected float attackDelay = 0.3f;
     [SerializeField] protected float attackRangeOffset = 0.75f;
-    [SerializeField] protected ListLevelConfigSO listLevelConfigSO;
+    [SerializeField] protected ListLevelCharacterConfigSO listLevelCharacterSO;
 
     [SerializeField] private Weapon weapon; // for testing
 
@@ -23,14 +23,14 @@ public abstract class Character : GameUnit {
     protected bool isAttacking;
     protected float worldAttackRange;
     protected float detectTriggerRange;
-    protected LevelConfigSO currentLevelConfigSO;
+    protected LevelCharacterConfigSO currentLevelCharacterSO;
 
     private Coroutine attackCoroutine;
 
     public virtual void OnInit() {
         isAttacking = false;
         level = 1;
-        currentLevelConfigSO = listLevelConfigSO.GetLevelGrowthByLevelID(level);
+        currentLevelCharacterSO = listLevelCharacterSO.GetLevelGrowthByLevelID(level);
         characterVisual.OnInit();
         OnEquipmentChanged(weapon);
         OnAttackRangeChanged();
@@ -47,7 +47,7 @@ public abstract class Character : GameUnit {
     }
     public void IncreasePoint(int point) {
         this.point += point;
-        if (CanLevelUp(point, currentLevelConfigSO.GetRequiredPointLevelUp())) {
+        if (CanLevelUp(point, currentLevelCharacterSO.GetRequiredPointLevelUp())) {
             LevelUp();
         }
     }
@@ -59,7 +59,7 @@ public abstract class Character : GameUnit {
     }
 
     public int GetPointReward() {
-        return currentLevelConfigSO.GetPointReward();
+        return currentLevelCharacterSO.GetPointReward();
     }
 
     public bool HasTarget() {
@@ -169,7 +169,7 @@ public abstract class Character : GameUnit {
         }
     }
 
-    protected void Upsize(LevelConfigSO levelGrowthSO) {
+    protected void Upsize(LevelCharacterConfigSO levelGrowthSO) {
         if (levelGrowthSO == null) return;
 
         characterVisual.UpSize(levelGrowthSO.GetScaleModifier()); // upsize visual
@@ -180,8 +180,8 @@ public abstract class Character : GameUnit {
 
     protected void LevelUp() {
         level++;
-        currentLevelConfigSO = listLevelConfigSO.GetLevelGrowthByLevelID(level);
-        Upsize(currentLevelConfigSO);
+        currentLevelCharacterSO = listLevelCharacterSO.GetLevelGrowthByLevelID(level);
+        Upsize(currentLevelCharacterSO);
     }
 
     private bool CanLevelUp(int point, int requiredPoint) {

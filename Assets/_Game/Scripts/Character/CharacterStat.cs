@@ -18,7 +18,7 @@ public class CharacterStat : MonoBehaviour {
         }
     }
     
-    public void OnLevelUp(LevelConfigSO levelConfigSO) {
+    public void OnLevelUp(LevelCharacterConfigSO levelConfigSO) {
         attackRange.AddFlatModifier(levelConfigSO.GetAttackRangeModifier());
     }
 

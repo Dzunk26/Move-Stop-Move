@@ -4,20 +4,16 @@ using UnityEngine;
 
 public class CharacterDetectTrigger : MonoBehaviour {
     [SerializeField] private Character character;
+    [SerializeField] private SphereCollider detectCollider;
 
-    private Transform tf;
-
-    private void Awake() {
-        tf = transform;
-    }
-
-    public void OnInit() {
-        
+    public void SetRange(float attackRange) {
+        detectCollider.radius = attackRange;
     }
 
     private void OnTriggerEnter(Collider other) {
         if (other.CompareTag(Constant.CHARACTER_TAG)) {
             Character otherCharacter = Cache.GetCharacter(other);
+            Debug.Log(character);
             if (otherCharacter != character) {
                 character.OnDetectTarget(otherCharacter);
             }

@@ -12,6 +12,7 @@ public enum PlayerState {
 public class Player : Character {
     [SerializeField] private float rotateSpeed = 15;
     [SerializeField] private float deadTimerMax = 2f;
+    [SerializeField] private PlayerDetectTriggerVisual playerDetectTriggerVisual;
 
     private Vector2 inputVector;
     private PlayerState currentState;
@@ -35,8 +36,13 @@ public class Player : Character {
         base.OnDespawn();
     }
 
-    protected override void OnHitted() {
+    public override void OnHitted() {
         ChangeState(PlayerState.Dead);
+    }
+
+    protected override void OnAttackRangeChanged() {
+        base.OnAttackRangeChanged();
+        playerDetectTriggerVisual.SetRange(worldAttackRange);
     }
 
     private bool IsMoving() {
@@ -94,7 +100,7 @@ public class Player : Character {
 
     private void HandleMovement() {
         Vector3 moveDir = new Vector3(inputVector.x, 0, inputVector.y);
-        Debug.DrawLine(TF.position, TF.position + moveDir * characterStat.attackRange.GetBaseValue());
+        Debug.DrawLine(TF.position, TF.position + moveDir * characterStat.GetWorldAttackRange()); // for testing
         moveDir = CheckFront(moveDir);
         TF.position += moveDir * characterStat.moveSpeed.GetValue() * Time.deltaTime;
         if (inputVector.sqrMagnitude > 0.001f) {

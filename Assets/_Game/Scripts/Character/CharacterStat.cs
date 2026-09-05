@@ -17,6 +17,10 @@ public class CharacterStat : MonoBehaviour {
             RemoveModifiers(oldEquipment);
         }
     }
+    
+    public void OnLevelUp(LevelConfigSO levelConfigSO) {
+        attackRange.AddFlatModifier(levelConfigSO.GetAttackRangeModifier());
+    }
 
     private void AddModifiers(Equipment equipment) {
         attackRange.AddFlatModifier(equipment.GetAttackRangeModifier());
@@ -42,5 +46,9 @@ public class CharacterStat : MonoBehaviour {
         moveSpeed.RemovePercentModifier(equipment.GetMoveSpeedPercentModifier() / 100);
 
         bonusGold.RemovePercentModifier(equipment.GetGoldPercentModifier() / 100);
+    }
+
+    public float GetWorldAttackRange() {
+        return attackRange.GetValue() * Constant.ATTACK_RANG_CONVERTER;
     }
 }

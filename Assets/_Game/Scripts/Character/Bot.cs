@@ -45,7 +45,6 @@ public class Bot : Character {
 
     public void OnExecuteIdle() {
         stateTimer -= Time.deltaTime;
-        Debug.Log("On Idle");
         characterVisual.OnIdle();
         if (HasTarget()) {
             ChangeState(BotStates.Attack);
@@ -73,16 +72,19 @@ public class Bot : Character {
         attackCount = 0;
         attackLimit = Random.Range(1, attackLimitMax + 1);
         StopMoving();
-        Debug.Log("attack limit: " + attackLimit);
     }
 
     public void OnExecuteAttack() {
-        BeginAttack();
         OnCoolDownAttack();
+
         if (isAttacking) return;
-        if (attackCount >= attackLimit || (!HasTarget())) {
+
+        if (attackCount >= attackLimit || !HasTarget()) {
             ChangeState(BotStates.Patrol);
+            return;
         }
+
+        BeginAttack();
     }
 
     public void OnEnterDead() {

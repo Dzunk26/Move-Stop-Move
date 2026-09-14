@@ -1,0 +1,21 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: a63fd389aed85384083a3f323fa46957, type: 3}
+  m_Name: Weapon 5 SO
+  m_EditorClassIdentifier: 
+  equipmentName: BATTLE AXE
+  goldRequire: 1500
+  equipmentIcon: {fileID: 0}
+  equipmentPrefab: {fileID: -5359414226636228705, guid: 1d5af1d38b964b049ac1e96b217ede02,
+    type: 3}
+  statDescription: +20 Range
+  weaponType: 5

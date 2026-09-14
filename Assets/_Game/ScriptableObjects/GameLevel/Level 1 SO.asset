@@ -1,0 +1,19 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 88cf20a862302394fa64966b4a221dda, type: 3}
+  m_Name: Level 1 SO
+  m_EditorClassIdentifier: 
+  levelID: 1
+  totalBotAmount: 25
+  maxActiveBot: 5
+  levelPrefab: {fileID: 8010997723342477715, guid: 1732ad5585c490a4c8ba4694f4ec52f8,
+    type: 3}

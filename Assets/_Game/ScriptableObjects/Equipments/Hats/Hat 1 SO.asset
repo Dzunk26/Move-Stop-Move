@@ -1,0 +1,21 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 785ec41a128a1434a8309e489d04bbdf, type: 3}
+  m_Name: Hat 1 SO
+  m_EditorClassIdentifier: 
+  equipmentName: Arrow
+  goldRequire: 500
+  equipmentIcon: {fileID: 0}
+  equipmentPrefab: {fileID: -4659677058032299755, guid: 2261a0bee1841f447993ada98f1be22b,
+    type: 3}
+  statDescription: 5% Range
+  hatType: 1

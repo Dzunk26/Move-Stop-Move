@@ -35,12 +35,16 @@ public class DataManager : Singleton<DataManager> {
             NewGame();
         }
 
+        if (dataPersistenceObjects == null) return;
+
         foreach (IDataPersistence dataPersistenceObj in dataPersistenceObjects) {
             dataPersistenceObj.LoadData(gameData);
         }
     }
 
     public void SaveGame() {
+        if (dataPersistenceObjects == null) return;
+
         foreach (IDataPersistence dataPersistenceObj in dataPersistenceObjects) {
             dataPersistenceObj.SaveData(ref gameData);
         }

@@ -4,6 +4,7 @@ using UnityEngine;
 
 public static class Cache {
     private static Dictionary<AnimState, string> dictAnimName = new Dictionary<AnimState, string>();
+    private static Dictionary<AnimState, int> dictAnimHash = new Dictionary<AnimState, int> ();
 
     private static Dictionary<Collider, Character> dictCharacter = new Dictionary<Collider, Character>();
     private static Dictionary<Collider, Weapon> dictWeapon = new Dictionary<Collider, Weapon>();
@@ -15,6 +16,15 @@ public static class Cache {
         }
 
         return dictAnimName[animState];
+    }
+
+    public static int GetAnimHash(AnimState animState) {
+        if (!dictAnimHash.ContainsKey(animState)) {
+            string animName = GetAnimName(animState);
+            int hash = Animator.StringToHash(animName);
+            dictAnimHash[animState] = hash;
+        }
+        return dictAnimHash[animState];
     }
 
     public static Character GetCharacter(Collider collider) {

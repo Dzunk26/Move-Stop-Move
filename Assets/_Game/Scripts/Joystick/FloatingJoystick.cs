@@ -16,9 +16,23 @@ public class FloatingJoystick : MonoBehaviour {
     }
 
     private void Start() {
+        GameManager.Instance.OnStateChanged += GameManager_OnStateChanged;
         GameInput.Instance.OnFingerDown += GameInput_OnFingerDown;
         GameInput.Instance.OnFingerMove += GameInput_OnFingerMove;
         GameInput.Instance.OnFingerUp += GameInput_OnFingerUp;
+    }
+
+    private void OnDestroy() {
+        GameManager.Instance.OnStateChanged -= GameManager_OnStateChanged;
+        GameInput.Instance.OnFingerDown -= GameInput_OnFingerDown;
+        GameInput.Instance.OnFingerMove -= GameInput_OnFingerMove;
+        GameInput.Instance.OnFingerUp -= GameInput_OnFingerUp;
+    }
+
+    private void GameManager_OnStateChanged(object sender, System.EventArgs e) {
+        if (!GameManager.Instance.IsPlayingGame()) {
+            OnTouchFingerUp();
+        }
     }
 
     private void GameInput_OnFingerDown(object sender, GameInput.TouchEventArgs e) {

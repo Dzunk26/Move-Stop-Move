@@ -40,6 +40,29 @@ public class GameInput : Singleton<GameInput> {
         EnhancedTouchSupport.Disable();
     }
 
+    public void OnInit() {
+        isFirstTouch = true;
+
+        movementFinger = null;
+        startPosition = Vector2.zero;
+        currentPosition = Vector2.zero;
+        inputVector = Vector2.zero;
+    }
+
+    public Vector2 GetMovementVectorNormalized() {
+        inputVector = currentPosition - startPosition;
+
+        if (inputVector.sqrMagnitude > maxMovement * maxMovement) {
+            inputVector = inputVector.normalized;
+        }
+        else {
+            inputVector = inputVector / maxMovement;
+            inputVector = HandleStickDeadzone(inputVector);
+        }
+
+        return inputVector;
+    }
+
     private void Touch_onFingerUp(Finger lostFinger) {
         if (lostFinger == movementFinger) {
             OnFingerUp?.Invoke(this, EventArgs.Empty);
@@ -61,7 +84,7 @@ public class GameInput : Singleton<GameInput> {
     }
 
     private void Touch_onFingerDown(Finger touchedFinger) {
-        //if (!GameManager.Instance.IsPlayingGame()) return;
+        if (!GameManager.Instance.IsPlayingGame()) return;
 
         if (isFirstTouch) {
             OnFirstTourch?.Invoke(this, EventArgs.Empty);
@@ -85,32 +108,5 @@ public class GameInput : Singleton<GameInput> {
         }
 
         return inputVector;
-    }
-
-    public Vector2 GetMovementVectorNormalized() {
-        inputVector = currentPosition - startPosition;
-
-        if (inputVector.sqrMagnitude > maxMovement * maxMovement) {
-            inputVector = inputVector.normalized;
-        }
-        else {
-            inputVector = inputVector / maxMovement;
-            inputVector = HandleStickDeadzone(inputVector);
-        }
-
-        return inputVector;
-    }
-
-    public bool IsMoveUp() {
-        return inputVector.y > 0;
-    }
-
-    public void OnInit() {
-        isFirstTouch = true;
-
-        movementFinger = null;
-        startPosition = Vector2.zero;
-        currentPosition = Vector2.zero;
-        inputVector = Vector2.zero;
     }
 }

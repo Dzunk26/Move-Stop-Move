@@ -77,6 +77,14 @@ public class CharacterVisual : MonoBehaviour {
         TF.localScale += newScale;
     }
 
+    public void OnPause() {
+        animator.enabled = false;
+    }
+
+    public void OnExitPause() {
+        animator.enabled = true;
+    }
+
     private EquipmentVisual FindEquipmentVisualByType(EquipmentType equipmentType) {
         foreach (EquipmentVisual equipmentVisual in equipmentVisuals) {
             if (equipmentVisual.IsMatchEquipmentType(equipmentType)) {

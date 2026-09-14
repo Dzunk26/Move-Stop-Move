@@ -16,12 +16,11 @@ public class Bot : Character {
     private float stateTimer;
     private int attackLimit;
     private int attackCount;
-
-    private void OnEnable() {
-        OnInit();
-    }
+    private bool isPaused;
 
     private void Update() {
+        if (isPaused) return;
+
         RemoveInvalidTagets();
 
         if (currentState != null) {
@@ -31,11 +30,26 @@ public class Bot : Character {
 
     public override void OnInit() {
         base.OnInit();
-        ChangeState(BotStates.Idle);
+        GameManager.Instance.OnStateChanged += GameManager_OnStateChanged;
+        if (GameManager.Instance.IsPlayingGame()) {
+            ChangeState(BotStates.Idle);
+        }
+        else {
+            ChangeState(BotStates.Waiting);
+        }
     }
 
     public override void OnDespawn() {
         base.OnDespawn();
+        isPaused = false;
+        GameManager.Instance.OnStateChanged -= GameManager_OnStateChanged;
+    }
+    public void OnEnterWaiting() {
+        StopMoving();
+    }
+
+    public void OnExecuteWaiting() {
+        characterVisual.OnIdle();
     }
 
     public void OnEnterIdle() {
@@ -61,7 +75,6 @@ public class Bot : Character {
     }
 
     public void OnExecutePatrol() {
-        Debug.Log("On Patrol");
         characterVisual.OnRun();
         if (IsDestination) {
             ChangeState(BotStates.Idle);
@@ -90,6 +103,7 @@ public class Bot : Character {
     public void OnEnterDead() {
         stateTimer = Random.Range(stateTimerMax / 2, stateTimerMax);
         StopMoving();
+        Dead();
     }
 
     public void OnExecuteDead() {
@@ -111,6 +125,8 @@ public class Bot : Character {
     }
 
     public void StopMoving() {
+        if (!agent.isOnNavMesh) return;
+
         agent.isStopped = true;
     }
 
@@ -131,6 +147,12 @@ public class Bot : Character {
         currentState?.OnEnter(this);
     }
 
+    public override void OnHitted() {
+        if (isDead) return;
+
+        Dead();
+    }
+
     protected override void Dead() {
         base.Dead();
         ChangeState(BotStates.Dead);
@@ -139,5 +161,28 @@ public class Bot : Character {
     protected override void BeginAttack() {
         base.BeginAttack();
         attackCount++;
+    }
+
+    private void GameManager_OnStateChanged(object sender, System.EventArgs e) {
+        if (GameManager.Instance.IsPauseGame()) {
+            isPaused = true;
+            StopMoving();
+            characterVisual.OnPause();
+        }
+        else if (GameManager.Instance.IsPlayingGame()) {
+            if (currentState == BotStates.Waiting) {
+                isPaused = false;
+                ChangeState(BotStates.Patrol);
+                return;
+            }
+
+            if (!isPaused) return;
+
+            isPaused = false;
+
+            if (currentState == BotStates.Patrol) {
+                ContinueMoving();
+            }
+        }
     }
 }

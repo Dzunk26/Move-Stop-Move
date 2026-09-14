@@ -8,10 +8,6 @@ public class CharacterEquipment : MonoBehaviour {
 
     [SerializeField] private Equipment[] currentEquipments;
 
-    private void Awake() {
-        OnInit();    
-    }
-
     public void OnInit() {
         int numSlots = System.Enum.GetNames(typeof(EquipmentType)).Length;
         currentEquipments = new Equipment[numSlots];

@@ -23,6 +23,8 @@ public class Player : Character {
     }
 
     private void Update() {
+        if (!GameManager.Instance.IsPlayingGame()) return;
+
         ListenInput();
 
         HandlePlayerState();
@@ -37,6 +39,8 @@ public class Player : Character {
     }
 
     public override void OnHitted() {
+        if (isDead) return;
+
         ChangeState(PlayerState.Dead);
     }
 
@@ -44,6 +48,7 @@ public class Player : Character {
         base.OnAttackRangeChanged();
         playerDetectTriggerVisual.SetRange(worldAttackRange);
     }
+
 
     private bool IsMoving() {
         return inputVector.sqrMagnitude > 0.01f;

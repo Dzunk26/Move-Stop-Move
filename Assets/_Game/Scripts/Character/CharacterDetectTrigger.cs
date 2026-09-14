@@ -13,7 +13,7 @@ public class CharacterDetectTrigger : MonoBehaviour {
     private void OnTriggerEnter(Collider other) {
         if (other.CompareTag(Constant.CHARACTER_TAG)) {
             Character otherCharacter = Cache.GetCharacter(other);
-            Debug.Log(character);
+
             if (otherCharacter != character) {
                 character.OnDetectTarget(otherCharacter);
             }

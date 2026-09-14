@@ -95,15 +95,16 @@ public class Pool {
     // lay phan tu ra khoi pool
     public GameUnit GetFromPool(Vector3 position, Quaternion rotation) {
         GameUnit unit;
+
         if (inactives.Count <= 0) {
             unit = GameObject.Instantiate(prefab, position, rotation, parent);
         }
         else {
             unit = inactives.Dequeue();
             unit.TF.SetPositionAndRotation(position, rotation);
-            unit.gameObject.SetActive(true);
         }
 
+        unit.gameObject.SetActive(true);
         actives.Add(unit);
 
         return unit;

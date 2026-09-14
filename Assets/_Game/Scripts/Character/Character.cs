@@ -3,7 +3,9 @@ using System.Collections.Generic;
 using System.Runtime.CompilerServices;
 using UnityEngine;
 
-public abstract class Character : GameUnit { 
+public abstract class Character : GameUnit {
+    public bool IsDead => isDead;
+
     [SerializeField] protected CharacterStat characterStat;
     [SerializeField] protected CharacterEquipment characterEquipment;
     [SerializeField] protected CharacterVisual characterVisual;
@@ -24,14 +26,17 @@ public abstract class Character : GameUnit {
     protected float worldAttackRange;
     protected float detectTriggerRange;
     protected LevelCharacterConfigSO currentLevelCharacterSO;
+    protected bool isDead;
 
     private Coroutine attackCoroutine;
 
     public virtual void OnInit() {
         isAttacking = false;
+        isDead = false;
         level = 1;
         currentLevelCharacterSO = listLevelCharacterSO.GetLevelGrowthByLevelID(level);
         characterVisual.OnInit();
+        characterEquipment.OnInit();
         OnEquipmentChanged(weapon);
         OnAttackRangeChanged();
     }
@@ -40,11 +45,10 @@ public abstract class Character : GameUnit {
 
     }
 
-
     public virtual void OnHitted() {
         characterVisual.OnHitted();
-        Dead();
     }
+
     public void IncreasePoint(int point) {
         this.point += point;
         if (CanLevelUp(point, currentLevelCharacterSO.GetRequiredPointLevelUp())) {
@@ -71,6 +75,8 @@ public abstract class Character : GameUnit {
     }
 
     public void OnEquipmentChanged(Equipment newEquipment) {
+        if (newEquipment == null) return;
+
         Equipment oldEquipment = characterEquipment.GetEquipmentByType(newEquipment.GetEquipmentType());
 
         characterStat.OnEquipmentChanged(newEquipment, oldEquipment);
@@ -78,8 +84,13 @@ public abstract class Character : GameUnit {
         characterEquipment.OnEquipmentChanged(newEquipment);
     }
 
+    public void RemoveInvalidTarget(Character target) {
+        targets.Remove(target);
+    }
+
     protected virtual void Dead() {
         characterVisual.OnDead();
+        isDead = true;
     }
 
     protected virtual void BeginAttack() {

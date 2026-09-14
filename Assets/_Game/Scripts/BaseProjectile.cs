@@ -21,6 +21,7 @@ public abstract class BaseProjectile : GameUnit {
     private bool isCollided;
 
     private void Update() {
+        if (!GameManager.Instance.IsPlayingGame()) return;
 
         if (isFlying) {
             Fly();
@@ -39,11 +40,12 @@ public abstract class BaseProjectile : GameUnit {
     private void OnTriggerEnter(Collider other) {
         if (other.CompareTag(Constant.CHARACTER_TAG)) {
             Character character = Cache.GetCharacter(other);
-            if (!IsOwner(character) && !isCollided) {
+            if (!IsOwner(character) && !isCollided && !character.IsDead) {
                 isCollided = true;
                 int pointReward = character.GetPointReward();
                 owner.IncreasePoint(pointReward);
                 character.OnHitted();
+                owner.RemoveInvalidTarget(character);
                 DelayFunct(nameof(OnDespawn), delayStop);
             }
         }

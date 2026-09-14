@@ -6,7 +6,7 @@ public class PantVisual : EquipmentVisual {
     [SerializeField] private Renderer pantRenderer;
 
     public override void OnChangeEquipment(Equipment newEquipment) {
-        currentEquipment = newEquipment;
+        EquipNewEquipment(newEquipment);
         Pant newPant = (Pant)newEquipment;
 
         pantRenderer.material = newPant.GetMaterial();

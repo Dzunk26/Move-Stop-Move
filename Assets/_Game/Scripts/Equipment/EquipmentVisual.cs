@@ -24,10 +24,15 @@ public abstract class EquipmentVisual : MonoBehaviour{
     }
 
     protected void EquipNewEquipment(Equipment newEquipment) {
-        Instantiate(newEquipment, TF);
+        if (newEquipment == null) return;
+
+        currentEquipment = Instantiate(newEquipment, TF);
     }
 
     protected void UnequipOldEquiment(Equipment oldEquipment) {
+        if (currentEquipment == null) return;
+
         Destroy(oldEquipment.gameObject);
+        currentEquipment = null;
     }
 }
